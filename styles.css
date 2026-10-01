@@ -23,3 +23,20 @@
 .priority-picker{margin:30px 0;padding:30px;border:1px solid #d5deed;border-radius:12px;background:linear-gradient(130deg,#f1f4fa,#fff)}.priority-picker .eyebrow{font:11px/1.6 var(--mono);margin-bottom:12px}.priority-picker h3{font:28px/1.3 var(--serif);margin:0 0 14px}.priority-buttons{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.priority-buttons button{border:1px solid #bcc9de;background:white;border-radius:30px;padding:12px 17px;cursor:pointer;font-size:14px;color:var(--blue);display:flex;align-items:center;gap:10px;transition:background .2s,transform .2s,box-shadow .2s}.priority-buttons button:hover{transform:translateY(-2px);box-shadow:0 4px 10px #0023660b}.priority-buttons button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:white}.priority-buttons span{font-size:20px;line-height:1}.priority-summary{border-top:1px solid #d5deed;padding-top:22px}.priority-summary p{max-width:800px}.priority-summary small{display:block;font-size:12px;color:var(--muted);margin-top:14px}.visual-cards>div{transition:transform .25s,box-shadow .25s}.visual-cards>div:hover{transform:translateY(-4px);box-shadow:0 8px 24px #0023660c}.button{transition:background .2s,transform .2s}.button:hover{transform:translateY(-2px)}
 @media(max-width:760px){.rental-map,.priority-picker{padding:22px 18px}.map-heading{display:block}.map-hint{display:block;margin-top:14px}.map-heading h3,.priority-picker h3{font-size:25px}.map-stops{gap:6px;margin:26px 0}.map-stops:before{top:23px}.map-node{width:46px;height:46px}.map-node svg{width:25px;height:25px}.map-stops strong{font-size:10px}.map-stops button{gap:8px}.map-number{font-size:9px}.map-detail{grid-template-columns:1fr;gap:6px;padding:20px;min-height:236px}.detail-number{font-size:25px}.map-detail h4{font-size:22px}.priority-buttons{gap:9px}.priority-buttons button{font-size:13px;padding:10px 13px}.priority-summary .button{width:100%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}.button:hover,.visual-cards>div:hover,.priority-buttons button:hover,.map-stops button:hover .map-node{transform:none}}
+
+/* A readable tap-first journey on small screens. */
+@media(max-width:760px){
+  .map-stops{grid-template-columns:1fr;gap:10px;margin:24px 0}
+  .map-stops:before{display:none}
+  .map-stops button{display:grid;grid-template-columns:46px 24px minmax(0,1fr);text-align:left;align-items:center;gap:12px;padding:10px 12px;border:1px solid #d5deed;border-radius:10px;background:white;color:#52637c}
+  .map-stops button[aria-pressed=true]{background:#e4ecfa;border-color:#002366;color:#002366}
+  .map-stops .map-node{width:46px;height:46px;color:#002366;background:#f1f4fa;box-shadow:none}
+  .map-stops button[aria-pressed=true] .map-node{background:#002366;color:white;box-shadow:none}
+  .map-stops strong{font-size:14px;line-height:1.45}
+  .map-stops .map-number{font-size:11px;letter-spacing:.5px}
+  .map-detail{min-height:0}.map-detail p{font-size:15px}
+  .priority-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .priority-buttons button{justify-content:flex-start;text-align:left;border-radius:12px;min-height:64px;line-height:1.45;font-size:13px;padding:12px 10px;gap:8px}
+  .priority-buttons span{flex:none;width:18px;text-align:center}
+  .priority-buttons button:last-child:nth-child(odd){grid-column:1/-1}
+}
