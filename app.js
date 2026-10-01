@@ -96,3 +96,37 @@ emailForm.addEventListener('submit', event => {
   // The new Google-hosted tab reports the actual server outcome; opening it is not proof of sending.
   emailForm.submit();
 });
+
+// Small interactions that help visitors make a useful first brief.
+const prefersLessMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const rentalSteps = [
+  ['Start with the life you want to live.','Your commute, your routines, your comfortable budget. A few clear priorities help us find homes that fit you.','#options','Find your starting point ↗'],
+  ['Look beyond the listing photos.','Try the journey, listen to the surroundings and picture an ordinary day at home. We’ll help you compare the trade-offs.','#viewing','Make your viewing count ↗'],
+  ['Get comfortable with the agreement.','Clarify the payments, promised fixes and practical terms. Put the things that matter in writing before you commit.','#budget','Plan your upfront costs ↗'],
+  ['The keys are just the beginning.','We’ll help coordinate utilities, internet and moving in. During your lease, come to us when something about the home needs sorting out.','#support','See how we help you settle in ↗'],
+  ['Move on with less on your mind.','We’ll help prepare for handback, work through proposed deductions and follow up on the security deposit due to you under your agreement.','#settling-in','Plan a smoother handback ↗']
+];
+const stepDetail=document.getElementById('rental-step-detail');
+document.querySelectorAll('[data-rental-step]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-rental-step]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));
+  const index=Number(button.dataset.rentalStep), [heading,copy,href,label]=rentalSteps[index];
+  stepDetail.querySelector('.detail-number').textContent='0'+(index+1);
+  stepDetail.querySelector('h4').textContent=heading;stepDetail.querySelector('p').textContent=copy;
+  const link=stepDetail.querySelector('a');link.href=href;link.textContent=label;
+  if(!prefersLessMotion.matches) stepDetail.animate([{opacity:.45,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
+}));
+document.querySelectorAll('[data-priority]').forEach(button=>button.addEventListener('click',()=>{
+  const selected=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'✓':'+';
+  const choices=Array.from(document.querySelectorAll('[data-priority][aria-pressed=true]')).map(item=>item.dataset.priority);
+  document.getElementById('priority-summary').textContent=choices.length ? 'Your starting brief: '+choices.join(' · ')+'. Let’s work through your budget and move-in date together.' : 'Everyday life is a good place to start. Pick a few priorities above.';
+  const contact=document.getElementById('priority-contact');
+  contact.href=choices.length ? 'https://wa.me/6583963088?text='+encodeURIComponent('Hi Angie, I’m starting my private rental search with Estate Basics. My priorities are: '+choices.join(', ')+'. Can we talk through my budget and move-in date?') : '#contact';
+  contact.firstChild.textContent=choices.length ? 'Share my starting brief with Angie ' : 'Let’s talk about your home ';
+  if(choices.length){contact.target='_blank';contact.rel='noopener';}else{contact.removeAttribute('target');contact.removeAttribute('rel');}
+}));
+const readingBar=document.querySelector('.reading-progress span');
+let scrollFramePending=false;
+function drawReadingProgress(){const available=document.documentElement.scrollHeight-window.innerHeight;readingBar.style.transform='scaleX('+Math.max(0,Math.min(1,available>0?window.scrollY/available:0))+')';scrollFramePending=false;}
+window.addEventListener('scroll',()=>{if(!scrollFramePending){scrollFramePending=true;requestAnimationFrame(drawReadingProgress);}},{passive:true});
+window.addEventListener('resize',drawReadingProgress);drawReadingProgress();
+if('IntersectionObserver' in window){const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){if(!prefersLessMotion.matches)entry.target.animate([{opacity:.65,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,easing:'cubic-bezier(.2,.65,.3,1)'});reveal.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.rental-map,.priority-picker,.visual-explainer,.calculator,.support-list,.people').forEach(item=>reveal.observe(item));}
