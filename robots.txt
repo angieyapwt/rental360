@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rental360.estatebasics.sg/sitemap.xml
